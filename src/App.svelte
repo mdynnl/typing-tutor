@@ -25,8 +25,7 @@
 		<Input
 			only={focus ? ["Enter"] : []}
 			on:only={() => {
-				if (active === lessons.length) active = 0;
-				else active++;
+				if (++active === lessons.length) active = 0;
 				input = "";
 			}}
 			on:done

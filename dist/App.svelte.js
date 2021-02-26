@@ -231,7 +231,7 @@ function instance($$self, $$props, $$invalidate) {
 	}
 
 	const only_handler = () => {
-		if (active === lessons.length) $$invalidate(0, active = 0); else $$invalidate(0, active++, active);
+		if ($$invalidate(0, ++active) === lessons.length) $$invalidate(0, active = 0);
 		$$invalidate(1, input = "");
 	};
 

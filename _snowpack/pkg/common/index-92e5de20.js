@@ -95,6 +95,9 @@ function get_current_component() {
         throw new Error('Function called outside component initialization');
     return current_component;
 }
+function onMount(fn) {
+    get_current_component().$$.on_mount.push(fn);
+}
 function createEventDispatcher() {
     const component = get_current_component();
     return (type, detail) => {
@@ -435,4 +438,4 @@ class SvelteComponent {
     }
 }
 
-export { destroy_block as A, noop as B, set_style as C, update_keyed_each as D, destroy_each as E, SvelteComponent as S, add_flush_callback as a, append as b, createEventDispatcher as c, attr as d, bind as e, binding_callbacks as f, bubble as g, check_outros as h, create_component as i, destroy_component as j, detach as k, element as l, group_outros as m, init as n, insert as o, mount_component as p, space as q, transition_out as r, safe_not_equal as s, transition_in as t, component_subscribe as u, listen as v, set_data as w, set_store_value as x, text as y, toggle_class as z };
+export { text as A, toggle_class as B, destroy_block as C, set_style as D, update_keyed_each as E, destroy_each as F, SvelteComponent as S, add_flush_callback as a, append as b, createEventDispatcher as c, attr as d, bind as e, binding_callbacks as f, bubble as g, check_outros as h, create_component as i, destroy_component as j, detach as k, element as l, group_outros as m, init as n, onMount as o, insert as p, mount_component as q, space as r, safe_not_equal as s, transition_in as t, transition_out as u, component_subscribe as v, listen as w, noop as x, set_data as y, set_store_value as z };

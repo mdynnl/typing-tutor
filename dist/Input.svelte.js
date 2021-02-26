@@ -5,56 +5,46 @@ import {
 	append,
 	attr,
 	component_subscribe,
-	create_component,
-	destroy_component,
 	detach,
 	element,
 	init,
 	insert,
 	listen,
-	mount_component,
+	noop,
 	safe_not_equal,
 	set_data,
 	set_store_value,
 	space,
 	text as text_1,
-	toggle_class,
-	transition_in,
-	transition_out
+	toggle_class
 } from "../_snowpack/pkg/svelte/internal.js";
 
 import { CHARKEYS } from "./util/keys.js";
-import DefaultPreventer from "./DefaultPreventer.svelte.js";
+import preventDefault from "./util/preventDefault.js";
 import blinker from "./util/blinker.js";
-import { createEventDispatcher } from "../_snowpack/pkg/svelte.js";
+import { createEventDispatcher, onMount } from "../_snowpack/pkg/svelte.js";
 
 function create_fragment(ctx) {
-	let defaultpreventer;
-	let t0;
 	let section;
 	let div;
 	let pre0;
+	let t0;
 	let t1;
-	let t2;
 	let pre1;
-	let t3;
+	let t2;
 	let span;
-	let current;
 	let mounted;
 	let dispose;
-	defaultpreventer = new DefaultPreventer({});
 
 	return {
 		c() {
-			create_component(defaultpreventer.$$.fragment);
-			t0 = space();
 			section = element("section");
 			div = element("div");
 			pre0 = element("pre");
-			t1 = text_1(/*text*/ ctx[1]);
-			t2 = space();
+			t0 = text_1(/*text*/ ctx[1]);
+			t1 = space();
 			pre1 = element("pre");
-			t3 = text_1(/*input*/ ctx[0]);
+			t2 = text_1(/*input*/ ctx[0]);
 			span = element("span");
 			span.textContent = "|";
 			attr(pre0, "class", "svelte-rev117");
@@ -65,17 +55,14 @@ function create_fragment(ctx) {
 			attr(div, "class", "svelte-rev117");
 		},
 		m(target, anchor) {
-			mount_component(defaultpreventer, target, anchor);
-			insert(target, t0, anchor);
 			insert(target, section, anchor);
 			append(section, div);
 			append(div, pre0);
-			append(pre0, t1);
-			append(div, t2);
+			append(pre0, t0);
+			append(div, t1);
 			append(div, pre1);
-			append(pre1, t3);
+			append(pre1, t2);
 			append(pre1, span);
-			current = true;
 
 			if (!mounted) {
 				dispose = listen(window, "keydown", /*keydown_handler*/ ctx[8]);
@@ -83,8 +70,8 @@ function create_fragment(ctx) {
 			}
 		},
 		p(ctx, [dirty]) {
-			if (!current || dirty & /*text*/ 2) set_data(t1, /*text*/ ctx[1]);
-			if (!current || dirty & /*input*/ 1) set_data(t3, /*input*/ ctx[0]);
+			if (dirty & /*text*/ 2) set_data(t0, /*text*/ ctx[1]);
+			if (dirty & /*input*/ 1) set_data(t2, /*input*/ ctx[0]);
 
 			if (dirty & /*hidden*/ 32) {
 				toggle_class(span, "hidden", /*hidden*/ ctx[5]);
@@ -94,18 +81,9 @@ function create_fragment(ctx) {
 				toggle_class(pre1, "error", /*error*/ ctx[2]);
 			}
 		},
-		i(local) {
-			if (current) return;
-			transition_in(defaultpreventer.$$.fragment, local);
-			current = true;
-		},
-		o(local) {
-			transition_out(defaultpreventer.$$.fragment, local);
-			current = false;
-		},
+		i: noop,
+		o: noop,
 		d(detaching) {
-			destroy_component(defaultpreventer, detaching);
-			if (detaching) detach(t0);
 			if (detaching) detach(section);
 			mounted = false;
 			dispose();
@@ -123,6 +101,7 @@ function instance($$self, $$props, $$invalidate) {
 	const blink = blinker();
 	component_subscribe($$self, blink, value => $$invalidate(4, $blink = value));
 	const dispatch = createEventDispatcher();
+	onMount(preventDefault);
 
 	const keydown_handler = e => {
 		set_store_value(blink, $blink = true, $blink);

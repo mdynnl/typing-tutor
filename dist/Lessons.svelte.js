@@ -17,25 +17,27 @@ import {
 	toggle_class
 } from "../_snowpack/pkg/svelte/internal.js";
 
+import { createEventDispatcher } from "../_snowpack/pkg/svelte.js";
+
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[3] = list[i];
-	child_ctx[5] = i;
+	child_ctx[4] = list[i];
+	child_ctx[6] = i;
 	return child_ctx;
 }
 
-// (6:4) {#each lessons as lesson, i}
+// (8:4) {#each lessons as lesson, i}
 function create_each_block(ctx) {
 	let div;
 	let t0;
-	let t1_value = /*i*/ ctx[5] + 1 + "";
+	let t1_value = /*i*/ ctx[6] + 1 + "";
 	let t1;
 	let t2;
 	let mounted;
 	let dispose;
 
 	function click_handler() {
-		return /*click_handler*/ ctx[2](/*i*/ ctx[5]);
+		return /*click_handler*/ ctx[3](/*i*/ ctx[6]);
 	}
 
 	return {
@@ -45,7 +47,7 @@ function create_each_block(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr(div, "class", "svelte-a0ckry");
-			toggle_class(div, "active", /*active*/ ctx[0] === /*i*/ ctx[5]);
+			toggle_class(div, "active", /*active*/ ctx[0] === /*i*/ ctx[6]);
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
@@ -62,7 +64,7 @@ function create_each_block(ctx) {
 			ctx = new_ctx;
 
 			if (dirty & /*active*/ 1) {
-				toggle_class(div, "active", /*active*/ ctx[0] === /*i*/ ctx[5]);
+				toggle_class(div, "active", /*active*/ ctx[0] === /*i*/ ctx[6]);
 			}
 		},
 		d(detaching) {
@@ -100,7 +102,7 @@ function create_fragment(ctx) {
 			}
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*active, lessons*/ 3) {
+			if (dirty & /*active, dispatch, lessons*/ 7) {
 				each_value = /*lessons*/ ctx[1];
 				let i;
 
@@ -135,14 +137,19 @@ function create_fragment(ctx) {
 function instance($$self, $$props, $$invalidate) {
 	let { lessons = ["a", "b"] } = $$props;
 	let { active = 0 } = $$props;
-	const click_handler = i => $$invalidate(0, active = i);
+	const dispatch = createEventDispatcher();
+
+	const click_handler = i => {
+		$$invalidate(0, active = i);
+		dispatch("change", { active });
+	};
 
 	$$self.$$set = $$props => {
 		if ("lessons" in $$props) $$invalidate(1, lessons = $$props.lessons);
 		if ("active" in $$props) $$invalidate(0, active = $$props.active);
 	};
 
-	return [active, lessons, click_handler];
+	return [active, lessons, dispatch, click_handler];
 }
 
 class Lessons extends SvelteComponent {

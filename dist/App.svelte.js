@@ -16,9 +16,11 @@ import {
 	group_outros,
 	init,
 	insert,
+	listen,
 	mount_component,
 	safe_not_equal,
 	space,
+	text as text_1,
 	transition_in,
 	transition_out
 } from "../_snowpack/pkg/svelte/internal.js";
@@ -37,7 +39,7 @@ function create_if_block(ctx) {
 				focus: /*focus*/ ctx[4],
 				error: /*error*/ ctx[3],
 				layout: LAYOUTS.MM,
-				hilight: /*hilight*/ ctx[5]
+				hilight: /*hilight*/ ctx[6]
 			}
 		});
 
@@ -53,7 +55,7 @@ function create_if_block(ctx) {
 			const keyboard_changes = {};
 			if (dirty & /*focus*/ 16) keyboard_changes.focus = /*focus*/ ctx[4];
 			if (dirty & /*error*/ 8) keyboard_changes.error = /*error*/ ctx[3];
-			if (dirty & /*hilight*/ 32) keyboard_changes.hilight = /*hilight*/ ctx[5];
+			if (dirty & /*hilight*/ 64) keyboard_changes.hilight = /*hilight*/ ctx[6];
 			keyboard.$set(keyboard_changes);
 		},
 		i(local) {
@@ -72,21 +74,28 @@ function create_if_block(ctx) {
 }
 
 function create_fragment(ctx) {
-	let section;
+	let section0;
+	let label;
+	let input0;
+	let t0;
+	let t1;
+	let section1;
 	let lessons_1;
 	let updating_active;
-	let t0;
+	let t2;
 	let div;
-	let input_1;
+	let input1;
 	let updating_input;
-	let t1;
+	let t3;
 	let current;
+	let mounted;
+	let dispose;
 
 	function lessons_1_active_binding(value) {
-		/*lessons_1_active_binding*/ ctx[7].call(null, value);
+		/*lessons_1_active_binding*/ ctx[9].call(null, value);
 	}
 
-	let lessons_1_props = { lessons: /*lessons*/ ctx[6] };
+	let lessons_1_props = { lessons: /*lessons*/ ctx[7] };
 
 	if (/*active*/ ctx[0] !== void 0) {
 		lessons_1_props.active = /*active*/ ctx[0];
@@ -94,50 +103,73 @@ function create_fragment(ctx) {
 
 	lessons_1 = new Lessons({ props: lessons_1_props });
 	binding_callbacks.push(() => bind(lessons_1, "active", lessons_1_active_binding));
+	lessons_1.$on("change", /*change_handler*/ ctx[10]);
 
-	function input_1_input_binding(value) {
-		/*input_1_input_binding*/ ctx[8].call(null, value);
+	function input1_input_binding(value) {
+		/*input1_input_binding*/ ctx[11].call(null, value);
 	}
 
-	let input_1_props = {
+	let input1_props = {
 		only: /*focus*/ ctx[4] ? ["Enter"] : [],
 		error: /*error*/ ctx[3],
 		text: /*text*/ ctx[2]
 	};
 
 	if (/*input*/ ctx[1] !== void 0) {
-		input_1_props.input = /*input*/ ctx[1];
+		input1_props.input = /*input*/ ctx[1];
 	}
 
-	input_1 = new Input({ props: input_1_props });
-	binding_callbacks.push(() => bind(input_1, "input", input_1_input_binding));
-	input_1.$on("only", /*only_handler*/ ctx[9]);
-	input_1.$on("done", /*done_handler*/ ctx[10]);
-	let if_block = /*hilight*/ ctx[5] && create_if_block(ctx);
+	input1 = new Input({ props: input1_props });
+	binding_callbacks.push(() => bind(input1, "input", input1_input_binding));
+	input1.$on("only", /*only_handler*/ ctx[12]);
+	input1.$on("done", /*done_handler*/ ctx[13]);
+	let if_block = /*hilight*/ ctx[6] && create_if_block(ctx);
 
 	return {
 		c() {
-			section = element("section");
-			create_component(lessons_1.$$.fragment);
-			t0 = space();
-			div = element("div");
-			create_component(input_1.$$.fragment);
+			section0 = element("section");
+			label = element("label");
+			input0 = element("input");
+			t0 = text_1(" Clear on lesson change");
 			t1 = space();
+			section1 = element("section");
+			create_component(lessons_1.$$.fragment);
+			t2 = space();
+			div = element("div");
+			create_component(input1.$$.fragment);
+			t3 = space();
 			if (if_block) if_block.c();
+			attr(input0, "type", "checkbox");
+			attr(section0, "class", "svelte-rd445u");
 			attr(div, "class", "container svelte-rd445u");
-			attr(section, "class", "svelte-rd445u");
+			attr(section1, "class", "svelte-rd445u");
 		},
 		m(target, anchor) {
-			insert(target, section, anchor);
-			mount_component(lessons_1, section, null);
-			append(section, t0);
-			append(section, div);
-			mount_component(input_1, div, null);
-			append(div, t1);
+			insert(target, section0, anchor);
+			append(section0, label);
+			append(label, input0);
+			input0.checked = /*clear*/ ctx[5];
+			append(label, t0);
+			insert(target, t1, anchor);
+			insert(target, section1, anchor);
+			mount_component(lessons_1, section1, null);
+			append(section1, t2);
+			append(section1, div);
+			mount_component(input1, div, null);
+			append(div, t3);
 			if (if_block) if_block.m(div, null);
 			current = true;
+
+			if (!mounted) {
+				dispose = listen(input0, "change", /*input0_change_handler*/ ctx[8]);
+				mounted = true;
+			}
 		},
 		p(ctx, [dirty]) {
+			if (dirty & /*clear*/ 32) {
+				input0.checked = /*clear*/ ctx[5];
+			}
+
 			const lessons_1_changes = {};
 
 			if (!updating_active && dirty & /*active*/ 1) {
@@ -147,24 +179,24 @@ function create_fragment(ctx) {
 			}
 
 			lessons_1.$set(lessons_1_changes);
-			const input_1_changes = {};
-			if (dirty & /*focus*/ 16) input_1_changes.only = /*focus*/ ctx[4] ? ["Enter"] : [];
-			if (dirty & /*error*/ 8) input_1_changes.error = /*error*/ ctx[3];
-			if (dirty & /*text*/ 4) input_1_changes.text = /*text*/ ctx[2];
+			const input1_changes = {};
+			if (dirty & /*focus*/ 16) input1_changes.only = /*focus*/ ctx[4] ? ["Enter"] : [];
+			if (dirty & /*error*/ 8) input1_changes.error = /*error*/ ctx[3];
+			if (dirty & /*text*/ 4) input1_changes.text = /*text*/ ctx[2];
 
 			if (!updating_input && dirty & /*input*/ 2) {
 				updating_input = true;
-				input_1_changes.input = /*input*/ ctx[1];
+				input1_changes.input = /*input*/ ctx[1];
 				add_flush_callback(() => updating_input = false);
 			}
 
-			input_1.$set(input_1_changes);
+			input1.$set(input1_changes);
 
-			if (/*hilight*/ ctx[5]) {
+			if (/*hilight*/ ctx[6]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty & /*hilight*/ 32) {
+					if (dirty & /*hilight*/ 64) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -186,21 +218,25 @@ function create_fragment(ctx) {
 		i(local) {
 			if (current) return;
 			transition_in(lessons_1.$$.fragment, local);
-			transition_in(input_1.$$.fragment, local);
+			transition_in(input1.$$.fragment, local);
 			transition_in(if_block);
 			current = true;
 		},
 		o(local) {
 			transition_out(lessons_1.$$.fragment, local);
-			transition_out(input_1.$$.fragment, local);
+			transition_out(input1.$$.fragment, local);
 			transition_out(if_block);
 			current = false;
 		},
 		d(detaching) {
-			if (detaching) detach(section);
+			if (detaching) detach(section0);
+			if (detaching) detach(t1);
+			if (detaching) detach(section1);
 			destroy_component(lessons_1);
-			destroy_component(input_1);
+			destroy_component(input1);
 			if (if_block) if_block.d();
+			mounted = false;
+			dispose();
 		}
 	};
 }
@@ -219,15 +255,23 @@ function instance($$self, $$props, $$invalidate) {
 
 	let active = 0;
 	let input = "";
+	let clear = false;
+
+	function input0_change_handler() {
+		clear = this.checked;
+		$$invalidate(5, clear);
+	}
 
 	function lessons_1_active_binding(value) {
 		active = value;
 		$$invalidate(0, active);
 	}
 
-	function input_1_input_binding(value) {
+	const change_handler = () => clear && $$invalidate(1, input = "");
+
+	function input1_input_binding(value) {
 		input = value;
-		($$invalidate(1, input), $$invalidate(0, active));
+		$$invalidate(1, input);
 	}
 
 	const only_handler = () => {
@@ -244,13 +288,6 @@ function instance($$self, $$props, $$invalidate) {
 			$: $$invalidate(2, text = lessons[active]);
 		}
 
-		if ($$self.$$.dirty & /*active*/ 1) {
-			$: {
-				active;
-				$$invalidate(1, input = "");
-			}
-		}
-
 		if ($$self.$$.dirty & /*input, text*/ 6) {
 			$: $$invalidate(3, error = !(input === "" || text.startsWith(input)));
 		}
@@ -260,7 +297,7 @@ function instance($$self, $$props, $$invalidate) {
 		}
 
 		if ($$self.$$.dirty & /*focus, error, text, input*/ 30) {
-			$: $$invalidate(5, hilight = focus
+			$: $$invalidate(6, hilight = focus
 			? "Enter"
 			: error ? "Backspace" : text[input.length]);
 		}
@@ -272,10 +309,13 @@ function instance($$self, $$props, $$invalidate) {
 		text,
 		error,
 		focus,
+		clear,
 		hilight,
 		lessons,
+		input0_change_handler,
 		lessons_1_active_binding,
-		input_1_input_binding,
+		change_handler,
+		input1_input_binding,
 		only_handler,
 		done_handler
 	];

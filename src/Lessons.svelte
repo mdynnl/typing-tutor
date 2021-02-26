@@ -1,11 +1,20 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+
     export let lessons = ["a", "b"];
     export let active = 0;
+    const dispatch = createEventDispatcher();
 </script>
 
 <section>
     {#each lessons as lesson, i}
-        <div on:click={() => (active = i)} class:active={active === i}>
+        <div
+            on:click={() => {
+                active = i;
+                dispatch("change", { active });
+            }}
+            class:active={active === i}
+        >
             Lesson {i + 1}
         </div>
     {/each}

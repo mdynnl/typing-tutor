@@ -9,6 +9,7 @@
 		"သေသောသူသည် သုဿာန်သို့ သက်သက်သာသာ သွားသည်",
 		"တာတေ တိုင်တည်တယ်။ တာတေ တီတူးတော့ တော်တော်တွေးတာ။",
 	];
+
 	let active = 0;
 
 	let input = "";
@@ -16,14 +17,16 @@
 	$: error = !(input === "" || text.startsWith(input));
 	$: focus = text === input;
 	$: hilight = focus ? "Enter" : error ? "Backspace" : text[input.length];
-	$: {
-		active;
-		input = "";
-	}
+	let clear = false;
 </script>
 
 <section>
-	<Lessons bind:active {lessons} />
+	<label>
+		<input type="checkbox" bind:checked={clear} /> Clear on lesson change
+	</label>
+</section>
+<section>
+	<Lessons bind:active on:change={() => clear && (input = "")} {lessons} />
 
 	<div class="container">
 		<Input

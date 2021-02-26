@@ -26,7 +26,11 @@
             }
             return;
         }
+
         if (CHARKEYS.includes(e.code)) {
+            if (error) {
+                return;
+            }
             input += e.key;
         } else if (e.code === "Backspace") {
             input = input.slice(0, input.length - 1);

@@ -227,7 +227,7 @@ function instance($$self, $$props, $$invalidate) {
 
 	function input_1_input_binding(value) {
 		input = value;
-		$$invalidate(1, input);
+		($$invalidate(1, input), $$invalidate(0, active));
 	}
 
 	const only_handler = () => {
@@ -242,6 +242,13 @@ function instance($$self, $$props, $$invalidate) {
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty & /*active*/ 1) {
 			$: $$invalidate(2, text = lessons[active]);
+		}
+
+		if ($$self.$$.dirty & /*active*/ 1) {
+			$: {
+				active;
+				$$invalidate(1, input = "");
+			}
 		}
 
 		if ($$self.$$.dirty & /*input, text*/ 6) {

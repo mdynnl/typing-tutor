@@ -115,6 +115,10 @@ function instance($$self, $$props, $$invalidate) {
 		}
 
 		if (CHARKEYS.includes(e.code)) {
+			if (error) {
+				return;
+			}
+
 			$$invalidate(0, input += e.key);
 		} else if (e.code === "Backspace") {
 			$$invalidate(0, input = input.slice(0, input.length - 1));

@@ -16,6 +16,10 @@
 	$: error = !(input === "" || text.startsWith(input));
 	$: focus = text === input;
 	$: hilight = focus ? "Enter" : error ? "Backspace" : text[input.length];
+	$: {
+		active;
+		input = "";
+	}
 </script>
 
 <section>

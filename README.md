@@ -1,29 +1,38 @@
-# New Project
+# create-svelte
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
 
-## Available Scripts
+## Creating a project
 
-### npm start
+If you're seeing this, you've probably already done this step. Congrats!
 
-Runs the app in the development mode.
-Open http://localhost:8080 to view it in the browser.
+```bash
+# create a new project in the current directory
+npm init svelte@next
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+# create a new project in my-app
+npm init svelte@next my-app
+```
 
-### npm test
+> Note: the `@next` is temporary
 
-Launches the test runner in the interactive watch mode.
-See the section about running tests for more information.
+## Developing
 
-### npm run build
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-Builds a static copy of your site to the `build/` folder.
-Your app is ready to be deployed!
+```bash
+npm run dev
 
-**For the best production performance:** Add a build bundler plugin like [@snowpack/plugin-webpack](https://github.com/snowpackjs/snowpack/tree/main/plugins/plugin-webpack) or [snowpack-plugin-rollup-bundle](https://github.com/ParamagicDev/snowpack-plugin-rollup-bundle) to your `snowpack.config.json` config file.
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
 
-### Q: What about Eject?
+## Building
 
-No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
+Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
+
+```bash
+npm run build
+```
+
+> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
